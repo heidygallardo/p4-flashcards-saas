@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+/*import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -70,5 +70,41 @@ export async function POST(req) {
 }
 
 
+*/
 
+import Stripe from 'stripe';
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
+export async function POST(req) {
+  const { plan } = await req.json();
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: plan === 'basic' ? 'Basic Plan' : 'Pro Plan',
+          },
+          unit_amount: plan === 'basic' ? 500 : 1000, // $5 or $10
+        },
+        quantity: 1,
+      }],
+      mode: 'payment',
+      success_url: `${req.headers.get('origin')}/generate`, // Redirect to /generate after successful payment
+      cancel_url: `${req.headers.get('origin')}/pricing`,
+    });
+
+    return new Response(JSON.stringify({ id: session.id }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}

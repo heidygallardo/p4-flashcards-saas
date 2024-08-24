@@ -5,22 +5,22 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const darkTheme = createTheme({
+const cuteTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',  // Switching to light mode for a brighter, cuter look
     primary: {
-      main: '#BB86FC',
+      main: '#e8b4b8',  // Soft pink for primary actions
     },
     secondary: {
-      main: '#03DAC6',
+      main: '#a49393',  // Warm beige for secondary elements
     },
     background: {
-      default: '#121212',
-      paper: '#1E1E1E',
+      default: '#eed6d3',  // Light, warm background color
+      paper: '#67595e',  // Deep, contrasting paper color
     },
     text: {
-      primary: '#FFFFFF',
-      secondary: '#B0B0B0',
+      primary: '#67595e',  // Darker color for primary text
+      secondary: '#a49393',  // Slightly lighter color for secondary text
     },
   },
   typography: {
@@ -28,10 +28,11 @@ const darkTheme = createTheme({
   },
 });
 
+
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={cuteTheme}>
         <CssBaseline />
         <html lang="en">
           <body className={inter.className}>{children}</body>

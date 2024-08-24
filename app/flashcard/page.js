@@ -2,7 +2,7 @@
 
 import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
-import { collection, doc, getDoc, getDocs } from "firebase/firestore"
+import { collection, doc, getDocs } from "firebase/firestore"
 import { db } from "@/firebase"
 import { Container, Grid, Card, CardActionArea, CardContent, Typography, Box } from "@mui/material"
 import { useSearchParams } from "next/navigation"
@@ -43,10 +43,16 @@ export default function Flashcard() {
     return (
         <Container maxWidth='lg'>
             <NavBar />
-            <Grid container spacing={3} sx={{ mt: 4 }}>
+            <Grid container spacing={3} sx={{ mt: 10 }}>
                 {flashcards.map((flashcard, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Card>
+                        <Card sx={{ 
+                            backgroundColor: '#67595e', // Dark background for the card
+                            color: '#e8b4b8', // Light text color
+                            '&:hover': {
+                                backgroundColor: '#a49393', // Lighter background on hover
+                            },
+                        }}>
                             <CardActionArea onClick={() => handleCardClick(index)}>
                                 <CardContent>
                                     <Box sx={{
@@ -77,12 +83,12 @@ export default function Flashcard() {
                                     }}>
                                         <div>
                                             <div>
-                                                <Typography variant="h5" component="div">
+                                                <Typography variant="h5" component="div" sx={{ color: '#e8b4b8' }}>
                                                     {flashcard.front}
                                                 </Typography>
                                             </div>
                                             <div>
-                                                <Typography variant="h5" component="div">
+                                                <Typography variant="h5" component="div" sx={{ color: '#e8b4b8' }}>
                                                     {flashcard.back}
                                                 </Typography>
                                             </div>
